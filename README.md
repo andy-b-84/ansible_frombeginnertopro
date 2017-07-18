@@ -1,7 +1,7 @@
-# 1st blocking point #
+# (Git+UTF-8) vs. FAT-32 #
 Ansible's source code cannot be cloned on a FAT-32 formatted disk (it has a UTF-8 file with Japanese caracters in it, which the `git clone` command does not suport.
 
-# 2nd blocking point#
+# Virtualbox vs. (Fedora 26 on a brand new Thinkpad) #
 Virtualbox over Fedora 26 in July 2017 XD
 
 ## Virtualization instructions in BIOS ##
@@ -18,5 +18,25 @@ My ThinkPad comes with a secure EFI boot, which Fedora 26 uses seamlessly.
 These 2 things just don't add up.
 I had to create a certificate and sign these modules myself, following this : https://gorka.eguileor.com/vbox-vmware-in-secureboot-linux-2016-update/
 
-# 3rd blocking point #
+# Networking #
 Network connections for virtualbox : got to run `sudo modprobe vboxnetadp` and `sudo modprobe vboxnetflt` in order to have a dedicated IP for my VM.
+
+# SSH #
+
+## Fingerprint ##
+In chapter 2 I had to launch ansible without vagrant : it tried to connect using ssh : it goes without saying that ansible cannot accept the machine's fingerprint by itself, so : when you're going to ssh over a server, do it yourself first, then tell Ansible how to do it :)
+
+## Permissions ##
+
+'Nix SSH permissions! Yay!
+Got that error message:
+```
+fatal: [machines/default/virtualbox/private_key]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: Could not resolve hostname machines/default/virtualbox/private_key: Name or service not known\r\n", "unreachable": true}
+fatal: [192.168.33.10]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0775 for '.vagrant/' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \".vagrant/\": bad permissions\r\nPermission denied (publickey,password).\r\n", "unreachable": true}
+```
+
+which you'll easily get rid of by typing these:
+```
+chmod 700 .vagrant
+chmod 600 .vagrant/machines/default/virtualbox/private_key
+```
