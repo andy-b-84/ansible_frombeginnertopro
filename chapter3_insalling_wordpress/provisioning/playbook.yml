@@ -52,8 +52,14 @@
       template: src=templates/nginx/default dest=/etc/nginx/sites-available/default
       notify: restart nginx
     # Wordpress
-    - name: Copy wordpress.zip into tmp
-      copy: src=files/wordpress.zip dest=/tmp/wordpress.zip
+    - name: Get WordPress checksum
+      uri: url=https://wordpress.org/latest.zip.sha1 return_content=true
+      register: wp_checksum
+    - name: Download WordPress
+      get_url:
+        url=https://wordpress.org/latest.zip
+        dest=/tmp/wordpress.zip
+        checksum="sha1:{{wp_checksum.content}}"
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
