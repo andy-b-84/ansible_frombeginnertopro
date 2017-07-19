@@ -9,10 +9,10 @@
     - name: Install PHP
       apt: name={{item}} state=installed
       with_items:
-        - php
-        - php-fpm
-        - php-mysql
-        - php-xml
+        - php7.1
+        - php7.1-fpm
+        - php7.1-mysql
+        - php7.1-xml
     - name: Remove apache2
       apt: name=apache2 state=removed
     - name: Install MySQL
@@ -41,7 +41,13 @@
     - name: Output new root password
       debug: msg="New root password is {{mysql_new_root_pass.stdout}}"
       when: mysql_new_root_pass.changed
-    - name: Install Nginx
-      apt: name={{item}} state=present update_cache=yes
-      with_items:
-        - nginx
+    - name: Install nginx
+      apt: name=nginx state=installed
+    - name: Start nginx
+      service: name=nginx state=started
+    - name: Create nginx config
+      template: src=templates/nginx/default dest=/etc/nginx/sites-available/default
+      notify: restart nginx    
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
