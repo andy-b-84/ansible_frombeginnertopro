@@ -74,6 +74,7 @@
       command: mysql -u root wordpress -e "SELECT ID FROM wordpress.wp_users LIMIT 1;"
       register: db_exist
       ignore_errors: true
+      changed_when: false
     - name: Copy WordPress DB
       copy: src=files/wp-database.sql dest=/tmp/wp-database.sql
       when: db_exist.rc > 0
