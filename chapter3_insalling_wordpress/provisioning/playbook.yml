@@ -2,6 +2,7 @@
 - hosts: all
   become: true
   tasks:
+    # PHP
     - name: Add the ondrej PHP PPA
       apt_repository: repo='ppa:ondrej/php'
     - name: Update the apt cache
@@ -15,6 +16,7 @@
         - php7.1-xml
     - name: Remove apache2
       apt: name=apache2 state=removed
+    # MySQL
     - name: Install MySQL
       apt: name={{item}} state=installed
       with_items:
@@ -41,13 +43,17 @@
     - name: Output new root password
       debug: msg="New root password is {{mysql_new_root_pass.stdout}}"
       when: mysql_new_root_pass.changed
+    # Nginx
     - name: Install nginx
       apt: name=nginx state=installed
     - name: Start nginx
       service: name=nginx state=started
     - name: Create nginx config
       template: src=templates/nginx/default dest=/etc/nginx/sites-available/default
-      notify: restart nginx    
+      notify: restart nginx
+    # Wordpress
+    - name: Copy wordpress.zip into tmp
+      copy: src=files/wordpress.zip dest=/tmp/wordpress.zip
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
