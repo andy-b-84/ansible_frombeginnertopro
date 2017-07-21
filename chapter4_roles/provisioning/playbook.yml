@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - mheap.common
+    - mheap.php
+    - mheap.nginx
+    - mheap.mysql
+    - mheap.wordpress

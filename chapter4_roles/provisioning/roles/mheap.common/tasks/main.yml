@@ -1,0 +1,5 @@
+---
+- name: Install required tools
+  apt: name={{item}} state=installed
+  with_items:
+    - unzip
