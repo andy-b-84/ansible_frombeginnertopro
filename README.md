@@ -29,6 +29,7 @@ In chapter 2 I had to launch ansible without vagrant : it tried to connect using
 ## Permissions ##
 
 'Nix SSH permissions! Yay!
+So, Vagrant does not set correct permissions on its generated ssh private key files.
 Got that error message:
 ```
 fatal: [machines/default/virtualbox/private_key]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: Could not resolve hostname machines/default/virtualbox/private_key: Name or service not known\r\n", "unreachable": true}
