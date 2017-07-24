@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - role: mheap.wordpress
+      database_name: michaelwp
+      database_user: michaelwp
+      database_password: bananas18374
