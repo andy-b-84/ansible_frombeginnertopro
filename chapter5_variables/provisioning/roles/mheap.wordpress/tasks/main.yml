@@ -18,9 +18,10 @@
   register: db_exist
   ignore_errors: true
   changed_when: false
-- name: Copy WordPress DB
-  template: src=wp-database.sql dest=/tmp/wp-database.sql
-  when: db_exist.rc > 0
-- name: Import WordPress DB
-  mysql_db: target=/tmp/wp-database.sql state=import name="{{database_name}}"
+- name: WordPress DB
+  block:
+  - name: copying DB dump
+    template: src=wp-database.sql dest=/tmp/wp-database.sql
+  - name: writing from dump to DB
+    mysql_db: target=/tmp/wp-database.sql state=import name="{{database_name}}"
   when: db_exist.rc > 0
