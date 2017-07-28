@@ -1,0 +1,8 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: Update User
+      wp_user: username=michael password=password url="http://book.example.com" first_name="Michael"
+      
+    - debug: var=wp_existing_users

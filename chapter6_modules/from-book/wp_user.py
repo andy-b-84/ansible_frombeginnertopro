@@ -48,8 +48,12 @@ def main():
             is_changed = True
             if is_changed and not module.check_mode:
                 server.wp.editProfile(1, params['username'], params['password'],details)
+
+    facts = {
+        "wp_existing_users": existing_users
+    }
                 
-    module.exit_json(changed=is_changed, user=dict(current_user))
+    module.exit_json(changed=is_changed, user=dict(current_user), ansible_facts=facts)
 
 if __name__ == '__main__':
     main()
