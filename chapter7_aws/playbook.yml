@@ -1,6 +1,13 @@
 ---
-- hosts: all
+- name: Create AWS resources
+  hosts: all
   connection: local
   gather_facts: False
   tasks:
-   - ping:
+   - ec2:
+       profile: ansible-book
+       image: ami-1e339e71
+       region: eu-central-1
+       instance_type: t2.micro
+       instance_tags:
+         Name: Demo
