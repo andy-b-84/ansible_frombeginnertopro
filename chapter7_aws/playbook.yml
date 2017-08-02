@@ -4,7 +4,7 @@
   connection: local
   gather_facts: False
   tasks:
-   - ec2_remote_facts:
+   - ec2_instance_facts:
        profile: ansible-book
        region: eu-central-1
        filters:
