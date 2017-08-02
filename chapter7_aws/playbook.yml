@@ -1,13 +1,13 @@
 ---
-- name: Create AWS resources
+- name: View AWS machines
   hosts: all
   connection: local
   gather_facts: False
   tasks:
-   - ec2:
+   - ec2_remote_facts:
        profile: ansible-book
-       image: ami-1e339e71
        region: eu-central-1
-       instance_type: t2.micro
-       instance_tags:
-         Name: Demo
+       filters:
+         "instance-state-name": running
+     register: instance_list
+   - debug: var=instance_list
